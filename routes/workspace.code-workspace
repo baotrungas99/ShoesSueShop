@@ -1,0 +1,16 @@
+{
+    "folders": [
+		{
+			"path": ".."
+		}
+	],
+    "settings": {
+        "diffEditor.wordWrap": "on",
+        "editor.wordWrap": "on"
+    },
+    "extensions": {
+        "recommendations": [
+            "tabnine.tabnine-vscode"
+        ]
+    }
+}
