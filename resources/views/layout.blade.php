@@ -617,8 +617,8 @@
                         });
                         $.ajax({
                             url:'{{url('/send-mail')}}',
-                            data:{shipping_email:shipping_email,shipping_name:shipping_name,shipping_phone:shipping_phone,shipping_address:shipping_address,shipping_notes:shipping_notes,_token:_token,order_feeship:order_feeship,order_coupon:order_coupon,shipping_method:shipping_method,session_cart_id=session_cart_id},
                             method:'get',
+                            data:{shipping_email:shipping_email,shipping_name:shipping_name,session_cart_id=session_cart_id},
                             success:function(){
                                 swal("Poof! Your order details is sent to your email. please check your email!", {
                                     icon: "success",
