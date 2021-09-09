@@ -14,15 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 //frontend
 Route::get('/','HomeController@index');
+Route::get('/404','HomeController@errors');
 Route::get('/homepage','HomeController@index');
 Route::post('/search','HomeController@search');
-
+Route::get('/contact','HomeController@contact_us');
 //category show in home view
+
 Route::get('/category-product/{slug_category_product}','CategoryProduct@show_category_home');
 Route::get('/brand-product/{brand_slug}','BrandProduct@show_brand_home');
 Route::get('/detail-product/{product_slug}','ProductController@details_product');
 
-
+Route::get('/category-post/{cate_post_slug}','CategoryPostController@show_category_post_home');
 
 //backend
 Route::get('/admin','AdminController@index');
@@ -30,13 +32,42 @@ Route::get('/dashboard','AdminController@show_dashboard');
 
 route::post('/admin-dashboard','AdminController@dashboard');
 Route::get('/logout', 'AdminController@logout');
+// category Post
+Route::get('/add-category-post', 'CategoryPostController@add_category_post');
+Route::get('/all-category-post', 'CategoryPostController@all_category_post');
 
-// banner
+Route::post('/save-category-post', 'CategoryPostController@save_category_post');
+
+Route::get('/unactive-category-post/{category_post_id}','CategoryPostController@unactive_category_post');
+Route::get('/active-category-post/{category_post_id}','CategoryPostController@active_category_post');
+
+Route::get('/edit-category-post/{category_post_id}','CategoryPostController@edit_category_post');
+Route::get('/delete-category-post/{category_post_id}','CategoryPostController@delete_category_post');
+Route::post('/update-category-post/{category_post_id}','CategoryPostController@update_category_post');
+
+// post
+Route::get('/add-post', 'PostController@add_post');
+Route::get('/all-post', 'PostController@all_post');
+Route::post('/save-post', 'PostController@save_post');
+Route::get('/unactive-post/{post_id}','PostController@unactive_post');
+Route::get('/active-post/{post_id}','PostController@active_post');
+
+Route::get('/edit-post/{post_id}','PostController@edit_post');
+Route::post('/update-post/{post_id}','PostController@update_post');
+Route::get('/delete-post/{post_id}','PostController@delete_post');
+
+// show Post News
+
+Route::get('/category-post/{cate_post_slug}','PostController@show_list_post');
+Route::get('/detail-post/{cate_post_slug}','PostController@show_detail_post');
+
+// slider--banner
 Route::get('/manage-slider', 'SliderController@manage_slider');
 route::get('/add-slider','SliderController@add_slider');
 route::post('/insert-slider','SliderController@insert_slider');
 Route::get('/unactive-slider/{slider_id}','SliderController@unactive_slider');
 Route::get('/active-slider/{slider_id}','SliderController@active_slider');
+Route::get('/delete-slider/{slider_id}','SliderController@delete_slider');
 
 //category product in admin view
 route::get('/add-category-product','CategoryProduct@add_category_product');
@@ -160,3 +191,26 @@ Route::post('/selete-delivery','DeliveryController@selete_delivery');
 Route::post('/insert-delivery','DeliveryController@insert_delivery');
 Route::post('/selete-feeship','DeliveryController@selete_feeship');
 Route::post('/update-feeship','DeliveryController@update_feeship');
+
+//authentication routes for admin row
+Route::get('/register-auth','AuthController@register_auth');
+Route::get('/login-auth','AuthController@login_auth');
+Route::get('/logout-auth','AuthController@logout_auth');
+
+Route::post('/register','AuthController@register');
+Route::post('/login','AuthController@login');
+
+//User routes
+Route::get('/users','UserController@index')->middleware('roles');
+Route::get('add-users','UserController@add_users');
+Route::get('delete-user-role/{admin_id}','UserController@delete_user_role');
+Route::post('store-users','UserController@store_users');
+Route::post('assign-roles','UserController@assign_roles')->middleware('roles');
+Route::group(['middleware' => 'roles'], function () {
+    // Route::get('/add-product','ProductController@add_product');
+	// Route::get('/edit-product/{product_id}','ProductController@edit_product');
+ });
+
+ Route::get('impersonate/{admin_id}','UserController@impersonate');
+ Route::get('impersonate-destroy','UserController@impersonate_destroy');
+

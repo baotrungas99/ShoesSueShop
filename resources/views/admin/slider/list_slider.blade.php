@@ -35,7 +35,7 @@
             <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
             <td>{{$slide->slider_name}}</td>
             <td><img src="public/upload/slider/{{$slide->slider_image}}" hight ="100" width="100"></td>
-            <td>{{$slide->slider_desc}}</td>
+            <td>{!!$slide->slider_desc!!}</td>
             <td><span class="text-ellipsis">
               <?php
                if($slide->slider_status==0){
@@ -50,7 +50,7 @@
             ?>
             </span></td>
             <td>
-              <a  href="{{URL::to('/delete-slide-product/'.$slide->slider_id)}}" onclick="return confirm('Are you sure?')"  class="active styling-edit" ui-toggle-class="">
+              <a  href="{{URL::to('/delete-slider/'.$slide->slider_id)}}" onclick="return confirm('Are you sure?')"  class="active styling-edit" ui-toggle-class="">
                 <i class="fa fa-times text-danger text"></i></a>
             </td>
           </tr>
@@ -59,6 +59,19 @@
         </tbody>
       </table>
     </div>
+    <footer class="panel-footer">
+      <div class="row">
+
+        <div class="col-sm-5 text-center">
+          <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
+        </div>
+        <div class="col-sm-7 text-right text-center-xs">
+          <ul class="pagination pagination-sm m-t-none m-b-none">
+              {!!$all_slide->links()!!}
+          </ul>
+        </div>
+      </div>
+    </footer>
   </div>
 </div>
 

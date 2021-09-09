@@ -9,20 +9,21 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\DB;
 use Session;
 use App\Models\Province;
-use App\models\District;
-use App\models\Ward;
-use App\models\Feeship;
-use App\models\Shipping;
-use App\models\Order;
-use App\models\OrderDetails;
-use App\models\LoginCustomer;
+use App\Models\District;
+use App\Models\Ward;
+use App\Models\Feeship;
+use App\Models\Shipping;
+use App\Models\Order;
+use App\Models\OrderDetails;
+use App\Models\LoginCustomer;
 use App\Models\SliderModel;
+use App\Models\CategoryPost;
 session_start();
 
 class CheckoutController extends Controller
 {
     public function AuthLogin(){
-        $admin_id = Session::get('admin_id');
+        $admin_id = Auth::id();
         if($admin_id){
             return Redirect::to('dashboard');
         }else{
@@ -37,10 +38,11 @@ class CheckoutController extends Controller
         $url_canonical = $request->url();
         //--seo
         $slider = SliderModel::Orderby('slider_id', 'desc')->where('slider_status', '0')->take(4)->get();
+        $category_post= CategoryPost::orderby('category_post_id', 'desc')->where('cate_post_status', '0')->take(5)->get();
 
         $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
         $brand_product = DB::table('tbl_brand_product')->where('brand_status','0')->orderby('brand_id','desc')->get();
-        return view('pages.checkout.login_checkout')->with('category',$cate_product)->with('brand',$brand_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider);
+        return view('pages.checkout.login_checkout')->with('category',$cate_product)->with('brand',$brand_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post);
     }
 
     public function add_customer(request $request){
@@ -67,11 +69,13 @@ class CheckoutController extends Controller
         $url_canonical = $request->url();
         //--seo
         $slider = SliderModel::Orderby('slider_id', 'desc')->where('slider_status', '0')->take(4)->get();
+        $category_post= CategoryPost::orderby('category_post_id', 'desc')->where('cate_post_status', '0')->take(5)->get();
 
         $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
         $brand_product = DB::table('tbl_brand_product')->where('brand_status','0')->orderby('brand_id','desc')->get();
         $province = Province::orderBy('matp','asc')->get();
-        return view('/pages.checkout.show_checkout')->with('category',$cate_product)->with('brand',$brand_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('province',$province)->with('slider',$slider);
+        return view('pages.checkout.show_checkout')->with('category',$cate_product)->with('brand',$brand_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('province',$province)->with('slider',$slider)->with('category_post',$category_post);
+        // return view('/pages.checkout.show_checkout')->with(compact('meta_desc', 'meta_keywords','meta_title','url_canonical','slider','cate_product','brand_product','province'));
     }
     public function save_checkout_customer(request $request){
         $data = array();
@@ -95,10 +99,11 @@ class CheckoutController extends Controller
         $url_canonical = $request->url();
         //--seo
         $slider = SliderModel::Orderby('slider_id', 'desc')->where('slider_status', '0')->take(4)->get();
+        $category_post= CategoryPost::orderby('category_post_id', 'desc')->where('cate_post_status', '0')->take(5)->get();
 
         $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
         $brand_product = DB::table('tbl_brand_product')->where('brand_status','0')->orderby('brand_id','desc')->get();
-        return view('pages.checkout.payment')->with('category',$cate_product)->with('brand',$brand_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider);
+        return view('pages.checkout.payment')->with('category',$cate_product)->with('brand',$brand_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post);
     }
 
     public function order_place(request $request){
@@ -109,6 +114,8 @@ class CheckoutController extends Controller
         $url_canonical = $request->url();
         //--seo
         $slider = SliderModel::Orderby('slider_id', 'desc')->where('slider_status', '0')->take(4)->get();
+        $category_post= CategoryPost::orderby('category_post_id', 'desc')->where('cate_post_status', '0')->take(5)->get();
+
         //insert payment method
         $data = array();
         $data['payment_method'] = $request->payment_option;
@@ -141,7 +148,7 @@ class CheckoutController extends Controller
             Cart::destroy();
             $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
             $brand_product = DB::table('tbl_brand_product')->where('brand_status','0')->orderby('brand_id','desc')->get();
-            return view('pages.checkout.handcash')->with('category',$cate_product)->with('brand',$brand_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider);
+            return view('pages.checkout.handcash')->with('category',$cate_product)->with('brand',$brand_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post);
         }else{
             echo 'debit card payment';
         }
@@ -184,8 +191,8 @@ class CheckoutController extends Controller
         ->join('tbl_customers','tbl_order.customer_id','=','tbl_customers.customer_id')
         ->select('tbl_order.*','tbl_customers.customer_name')
         ->orderby('tbl_order.order_id','desc')->get();
-        $manager_order = view('admin.manage_orders')->with('all_orders',$all_orders);
-        return view('admin_layout')->with('admin.manage_orders',$manager_order);
+        $manager_order = view('admin.order.manage_orders')->with('all_orders',$all_orders);
+        return view('admin_layout')->with('admin.order.manage_orders',$manager_order);
     }
     public function view_orders($order_id){
         $order_by_id = DB::table('tbl_order')
@@ -196,8 +203,8 @@ class CheckoutController extends Controller
         // echo '<pre>';
         // print_r($order_by_id);
         // echo '</pre>';
-        $manager_order_by_id = view('admin.view_orders')->with('order_by_id',$order_by_id);
-        return view('admin_layout')->with('admin.view_orders',$manager_order_by_id);
+        $manager_order_by_id = view('admin.order.view_orders')->with('order_by_id',$order_by_id);
+        return view('admin_layout')->with('admin.order.view_orders',$manager_order_by_id);
 
     }
 

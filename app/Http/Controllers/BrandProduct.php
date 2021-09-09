@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Redirect;
 use Session;
 use App\Models\SliderModel;
 use DB;
+use Auth;
 use App\Models\Brand;
+use App\Models\CategoryPost;
 session_start();
 
 
@@ -17,7 +19,7 @@ class BrandProduct extends Controller
 {
 //funtion Admmin page
     public function AuthLogin(){
-        $admin_id = Session::get('admin_id');
+        $admin_id = Auth::id();
         if($admin_id){
             return Redirect::to('dashboard');
         }else{
@@ -31,9 +33,11 @@ class BrandProduct extends Controller
         // $manager_brand_product = array();
        // $all_brand_product = DB::table('tbl_brand_product')->get();
         //$all_brand_product = Brand::all();
-        $all_brand_product = Brand::orderby('brand_id','desc')->get();
-        $manager_brand_product = view('admin.all_brand_product')->with('all_brand_product',$all_brand_product);
-        return view('admin_layout')->with('admin.all_brand_product',$manager_brand_product);
+
+        $all_brand_product = Brand::orderby('brand_id','desc')->paginate(5);
+
+        // $manager_brand_product = view('admin.all_brand_product')->with('all_brand_product',$all_brand_product);
+        return view('admin.brand_product.all_brand_product')->with(compact('all_brand_product'));
 
         /*echo '<pre>';
         print_r($all_brand_product);
@@ -43,7 +47,7 @@ class BrandProduct extends Controller
     public function add_brand_product()
     {
         $this->AuthLogin();
-        return view('admin.add_brand_product');
+        return view('admin.brand_product.add_brand_product');
     }
     public function save_brand_product(Request $request)
     {
@@ -122,6 +126,7 @@ class BrandProduct extends Controller
 //funtion home page
     public function show_brand_home(Request $request,$brand_slug){
         $slider = SliderModel::Orderby('slider_id', 'desc')->where('slider_status', '0')->take(4)->get();
+        $category_post= CategoryPost::orderby('category_post_id', 'desc')->where('cate_post_status', '0')->take(5)->get();
 
         $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
         $brand_product = DB::table('tbl_brand_product')->where('brand_status','0')->orderby('brand_id','desc')->get();
@@ -139,6 +144,6 @@ class BrandProduct extends Controller
 
         $brand_name = DB::table('tbl_brand_product')->where('brand_slug', $brand_slug)->limit(1)->get();
 
-        return view('pages.brand.show_brand')->with('category',$cate_product)->with('brand',$brand_product)->with('brand_by_id',$brand_by_id)->with('brand_name',$brand_name)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider);
+        return view('pages.brand.show_brand')->with('category',$cate_product)->with('brand',$brand_product)->with('brand_by_id',$brand_by_id)->with('brand_name',$brand_name)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post);
     }
 }

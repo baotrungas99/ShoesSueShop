@@ -4,13 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Province;
-use App\models\District;
-use App\models\Ward;
-use App\models\Feeship;
+use App\Models\District;
+use App\Models\Ward;
+use App\Models\Feeship;
 use App\Models\SliderModel;
-
+use Illuminate\Support\Facades\Redirect;
+use Auth;
 class DeliveryController extends Controller
 {
+    public function AuthLogin(){
+        $admin_id = Auth::id();
+        if($admin_id){
+            return Redirect::to('dashboard');
+        }else{
+            return Redirect::to('admin')->send();
+        }
+    }
     public function delivery(Request $request)
     {
         $province = Province::orderby('matp', 'ASC')->get();

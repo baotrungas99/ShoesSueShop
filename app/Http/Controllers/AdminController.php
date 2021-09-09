@@ -12,12 +12,13 @@ use Validator;
 use App\Models\Social; //using model Social
 use Socialite; //Using Socialite
 use App\Models\Login; //Using model Login
+use Auth; //Using Auth
 session_start();
 
 class AdminController extends Controller
 {
     public function AuthLogin(){
-        $admin_id = Session::get('admin_id');
+        $admin_id = Auth::id();
         if($admin_id){
             return Redirect::to('dashboard');
         }else{
@@ -25,7 +26,7 @@ class AdminController extends Controller
         }
     }
     public function index(){
-        return view('admin_login');
+        return view('admin.custom_auth.login_auth');
     }
 
     public function show_dashboard(){

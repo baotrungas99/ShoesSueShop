@@ -3,25 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\models\Shipping;
-use App\models\Order;
-use App\models\OrderDetails;
-use App\models\Feeship;
-use App\models\Customer;
-use App\models\Coupon;
-use App\models\Product;
-use App\models\SliderModel;
+use App\Models\Shipping;
+use App\Models\Order;
+use App\Models\OrderDetails;
+use App\Models\Feeship;
+use App\Models\Customer;
+use App\Models\Coupon;
+use App\Models\Product;
+use App\Models\SliderModel;
+use Auth;
+use Illuminate\Support\Facades\Redirect;
 use PDF;
 session_start();
 class OrderController extends Controller
 {
+    public function AuthLogin(){
+        $admin_id = Auth::id();
+        if($admin_id){
+            return Redirect::to('dashboard');
+        }else{
+            return Redirect::to('admin')->send();
+        }
+    }
     public function update_qty(request $request){
+        $this->AuthLogin();
         $data = $request->all();
         $order_details = OrderDetails::where('product_id', $data['order_product_id'])->where('order_code', $data['order_code'])->first();
         $order_details->product_sales_quantity = $data['order_qty'];
         $order_details->save();
     }
-    public function update_order_qty(request $request,){
+    public function update_order_qty(request $request){
+        $this->AuthLogin();
         $data = $request->all();
         //update order
         $order = Order::find($data['order_id']);
@@ -62,10 +74,12 @@ class OrderController extends Controller
         }
     }
     public function manage_orders(){
+        $this->AuthLogin();
         $order = Order::orderby('created_at', 'desc')->get();
-        return view('admin.manage_orders')->with(compact('order'));
+        return view('admin.order.manage_orders')->with(compact('order'));
     }
     public function view_orders($order_code){
+        $this->AuthLogin();
         // $slider = SliderModel::Orderby('slider_id', 'desc')->where('slider_status', '0')->take(4)->get();
         $order_details = OrderDetails::with('product')->where('order_code', $order_code)->get();
         $order = Order::where('order_code', $order_code)->get();
@@ -92,14 +106,16 @@ class OrderController extends Controller
             $coupon_number=0;
         }
 
-        return view('admin.view_orders')->with(compact('order_details','customer','shipping','order_details','coupon_condition','coupon_number','order','order_status'));
+        return view('admin.order.view_orders')->with(compact('order_details','customer','shipping','order_details','coupon_condition','coupon_number','order','order_status'));
     }
     public function print_orders($checkout_code){
+        $this->AuthLogin();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($this->print_order_convert($checkout_code));
         return $pdf->stream();
     }
     public function print_order_convert($checkout_code){
+        $this->AuthLogin();
         // return $checkout_code;
         $order_details = OrderDetails::where('order_code', $checkout_code)->get();
         $order = Order::orderby('created_at', 'desc')->get();

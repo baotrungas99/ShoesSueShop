@@ -7,12 +7,15 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Redirect;
 use Session;
 use App\Models\SliderModel;
+use App\Models\CategoryPost;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Auth;
 session_start();
 class ProductController extends Controller
 {
     public function AuthLogin(){
-        $admin_id = Session::get('admin_id');
+        $admin_id = Auth::id();
         if($admin_id){
             return Redirect::to('dashboard');
         }else{
@@ -27,7 +30,7 @@ class ProductController extends Controller
         $brand_product = DB::table('tbl_brand_product')->orderby('brand_id','desc')->get();
 
 
-        return view('admin.add_product')->with('cate_product',$cate_product)->with('brand_product',$brand_product);
+        return view('admin.product.add_product')->with('cate_product',$cate_product)->with('brand_product',$brand_product);
 
     }
 
@@ -40,9 +43,9 @@ class ProductController extends Controller
         $all_product = DB::table('tbl_product')
         ->join('tbl_category_product','tbl_category_product.category_id','=','tbl_product.category_id')
         ->join('tbl_brand_product','tbl_brand_product.brand_id','=','tbl_product.brand_id')
-        ->orderby('tbl_product.product_id','desc')->get();
-        $manager_product = view('admin.all_product')->with('all_product',$all_product);
-        return view('admin_layout')->with('admin.all_product',$manager_product);
+        ->orderby('tbl_product.product_id','desc')->paginate(5);
+        $manager_product = view('admin.product.all_product')->with('all_product',$all_product);
+        return view('admin_layout')->with('admin.product.all_product',$manager_product);
 
         /*echo '<pre>';
         print_r($all_category_product);
@@ -105,13 +108,13 @@ class ProductController extends Controller
         $brand_product = DB::table('tbl_brand_product')->orderby('brand_id','desc')->get();
 
         $edit_product = DB::table('tbl_product')->where('product_id',$product_id)->get();
-        $manager_product = view('admin.edit_product')->with('edit_product',$edit_product)->with('cate_product',$cate_product)->with('brand_product',$brand_product);
-        return view('admin_layout')->with('admin.edit_product',$manager_product);
+        $manager_product = view('admin.product.edit_product')->with('edit_product',$edit_product)->with('cate_product',$cate_product)->with('brand_product',$brand_product);
+        return view('admin_layout')->with('admin.product.edit_product',$manager_product);
     }
     public function update_product(Request $request,$product_id)
     {
         $this->AuthLogin();
-
+        $product = Product::find($product_id);
         $data = array();
         $data['product_name'] = $request->product_name;
         $data['product_slug'] = $request->product_slug;
@@ -125,6 +128,8 @@ class ProductController extends Controller
         $get_image = $request->file('product_image');
 
         if($get_image){
+            $product_image = $product->product_image;
+            unlink('public/upload/post/' . $product_image);
             $get_image_name = $get_image->getClientOriginalName();
             $name_image = current(explode('.', $get_image_name));
             $new_image = $name_image.rand(0,99).'.'.$get_image->getClientOriginalExtension();
@@ -142,8 +147,11 @@ class ProductController extends Controller
     }
     public function delete_product($product_id){
         $this->AuthLogin();
-
-         DB::table('tbl_product')->where('product_id', $product_id)->delete();
+        $product = Product::find($product_id);
+        $product_image = $product->product_image;
+        unlink('public/upload/product/' . $product_image);
+        $product->delete();
+        // DB::table('tbl_product')->where('product_id', $product_id)->delete();
         Session::put('message','delete product successful');
         return Redirect::to('all-product');
 
@@ -153,11 +161,14 @@ class ProductController extends Controller
     public function details_product(Request $request,$product_slug){
         $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
         $brand_product = DB::table('tbl_brand_product')->where('brand_status','0')->orderby('brand_id','desc')->get();
+
+        $slider = SliderModel::Orderby('slider_id', 'desc')->where('slider_status', '0')->take(4)->get();
+        $category_post= CategoryPost::orderby('category_post_id', 'desc')->where('cate_post_status', '0')->take(5)->get();
+
         $details_product = DB::table('tbl_product')
         ->join('tbl_category_product','tbl_category_product.category_id','=','tbl_product.category_id')
         ->join('tbl_brand_product','tbl_brand_product.brand_id','=','tbl_product.brand_id')
         ->where('tbl_product.product_slug',$product_slug)->get();
-        $slider = SliderModel::Orderby('slider_id', 'desc')->where('slider_status', '0')->take(4)->get();
 
         foreach($details_product as $key => $value){
             $category_id = $value->category_id;
@@ -176,7 +187,7 @@ class ProductController extends Controller
         ->where('tbl_category_product.category_id',$category_id)->wherenotin('tbl_product.product_slug',[$product_slug])->get();
 
         return view('pages.product.show_details')->with('category',$cate_product)->with('brand',$brand_product)
-        ->with('details',$details_product)->with('relate',$related_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider);
+        ->with('details',$details_product)->with('relate',$related_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post);
     }
 }
 

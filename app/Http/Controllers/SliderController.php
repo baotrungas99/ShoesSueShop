@@ -7,12 +7,13 @@ use App\Models\SliderModel;
 use Illuminate\Support\Facades\Redirect;
 use Session;
 use DB;
+use Auth;
 session_start();
 class SliderController extends Controller
 {
     //funtion Admmin page
     public function AuthLogin(){
-        $admin_id = Session::get('admin_id');
+        $admin_id = Auth::id();
         if($admin_id){
             return Redirect::to('dashboard');
         }else{
@@ -20,15 +21,17 @@ class SliderController extends Controller
         }
     }
     public function manage_slider(){
-        $all_slide = SliderModel::orderby('slider_id','desc')->get();
+        $this->AuthLogin();
+        $all_slide = SliderModel::orderby('slider_id','desc')->paginate(5);
 
         return view('admin.slider.list_slider')->with(compact('all_slide'));
     }
     public function add_slider(){
-
+        $this->AuthLogin();
         return view('admin.slider.add_slider');
     }
     public function insert_slider(request $request){
+        $this->AuthLogin();
         $data = $request->all();
         // dd($data);
         $get_image = $request->file('slider_image');
@@ -67,5 +70,13 @@ class SliderController extends Controller
         session::put('message','slider unactive');
         return Redirect::to('manage-slider');
     }
-
+    public function delete_slider(request $request, $slider_id){
+        $this->AuthLogin();
+        $slider = SliderModel::find($slider_id);
+        $slider_image = $slider->slider_image;
+        unlink('public/upload/slider/' . $slider_image);
+        SliderModel::find($slider_id)->delete();
+        session::put('message','delete slider successful');
+        return Redirect()->back();
+    }
 }

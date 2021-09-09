@@ -33,6 +33,8 @@
 					</div>
 				</div>
         @endforeach
-
-</div>
+        </div>
+        <ul class="pagination pagination-sm m-t-none m-b-none">
+                       {!!$all_product->links()!!}
+        </ul>
 @endsection

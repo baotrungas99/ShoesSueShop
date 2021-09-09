@@ -116,30 +116,28 @@
 										<div class="product-image-wrapper">
 											<div class="single-products">
 												<div class="productinfo text-center">
-													<img src="{{URL::to('/public/upload/product/'.$related->product_image)}}" alt="" />
-													<h2>${{number_format($related->product_price)}}</h2>
-													<p>{{$related->product_name}}</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+													
+													<form>
+                                @csrf
+                                <input type="hidden" class="cart_product_id_{{$related->product_id}}" value="{{$related->product_id}}" >
+                                <input type="hidden" class="cart_product_name_{{$related->product_id}}" value="{{$related->product_name}}" >
+                                <input type="hidden" class="cart_product_image_{{$related->product_id}}" value="{{$related->product_image}}" >
+                                <input type="hidden" class="cart_product_price_{{$related->product_id}}" value="{{$related->product_price}}" >
+                                <input type="hidden" class="cart_product_qty_{{$related->product_id}}" value="1" >
+
+                                <a href="{{URL::to('detail-product/' . $related->product_slug)}}">
+                                    <img src="{{URL::to('public/upload/product/' . $related->product_image)}}" alt="" />
+                                        <h2>{{number_format($related->product_price)}}$</h2>
+                                        <p>{{$related->product_name}}</p>
+                                </a>
+                                     <button type="button" class="btn btn-default add-to-cart" data-id_product="{{$related->product_id}}" name="add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                            </form>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
                                 @endforeach
-								<div class="item">
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="{{URL::to('public/frontend/images/recommend1.jpg')}}" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
 							</div>
 							 <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
 								<i class="fa fa-angle-left"></i>

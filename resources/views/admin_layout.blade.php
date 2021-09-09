@@ -73,11 +73,11 @@ $("#validatetForm").validate();
         <!-- user login dropdown start-->
         <li class="dropdown">
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <img alt="" src="{{asset('public/backend/images/2.png')}}">
+                <img alt="" src="{{asset('public/backend/images/adminlogo.jpg')}}">
                 <span class="username">
 
                 <?php
-	                $name = Session::get('admin_name');
+	                $name = Auth::user()->admin_name;
 	                if($name){
 		                    echo $name;
 	                }
@@ -89,7 +89,7 @@ $("#validatetForm").validate();
             <ul class="dropdown-menu extended logout">
                 <li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>
                 <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-                <li><a href="{{URL::to('/logout')}}"><i class="fa fa-key"></i> Log Out</a></li>
+                <li><a href="{{URL::to('/logout-auth')}}"><i class="fa fa-key"></i> Log Out</a></li>
             </ul>
         </li>
         <!-- user login dropdown end -->
@@ -110,7 +110,7 @@ $("#validatetForm").validate();
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
-                </li>
+                </li>@hasrole(['admin','user'])
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa fa-phone-square"></i>
@@ -165,7 +165,6 @@ $("#validatetForm").validate();
                     </ul>
                 </li>
 
-
                  <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa fa-book"></i>
@@ -177,7 +176,6 @@ $("#validatetForm").validate();
 
                     </ul>
                 </li>
-
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa fa-book"></i>
@@ -189,8 +187,50 @@ $("#validatetForm").validate();
 
                     </ul>
                 </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Manage Category Post News</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/add-category-post')}}">Add category post news</a></li>
+						<li><a href="{{URL::to('/all-category-post')}}">Category post news list</a></li>
 
-
+                    </ul>
+                </li>
+                @endhasrole
+                @hasrole(['admin','user','author'])
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Manage Post News</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/add-post')}}">Add post news</a></li>
+						<li><a href="{{URL::to('/all-post')}}">Post news list</a></li>
+                    </ul>
+                </li>
+                @endhasrole
+                @hasrole('admin')
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Users</span>
+                    </a>
+                    <ul class="sub">
+                         <li><a href="{{URL::to('/add-users')}}">Add user</a></li>
+                        <li><a href="{{URL::to('/users')}}">Manage user</a></li>
+                    </ul>
+                </li>
+                @endhasrole
+                @impersonate
+                <li>
+                    <a href="{{URL::to('/impersonate-destroy')}}">
+                        <i class="fa fa-backward"></i>
+                        <span>Return back</span>
+                    </a>
+                </li>
+                @endimpersonate
             </ul>            </div>
         <!-- sidebar menu end-->
     </div>
@@ -418,6 +458,39 @@ $("#validatetForm").validate();
 
 	});
 	</script>
+    <script type="text/javascript">
+
+ function ChangeToSlug()
+     {
+         var slug;
+         //Lấy text từ thẻ input title
+         slug = document.getElementById("slug").value;
+         slug = slug.toLowerCase();
+         //Đổi ký tự có dấu thành không dấu
+             slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a');
+             slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e');
+             slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i');
+             slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o');
+             slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
+             slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
+             slug = slug.replace(/đ/gi, 'd');
+             //Xóa các ký tự đặt biệt
+             slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '');
+             //Đổi khoảng trắng thành ký tự gạch ngang
+             slug = slug.replace(/ /gi, "-");
+             //Đổi nhiều ký tự gạch ngang liên tiếp thành 1 ký tự gạch ngang
+             //Phòng trường hợp người nhập vào quá nhiều ký tự trắng
+             slug = slug.replace(/\-\-\-\-\-/gi, '-');
+             slug = slug.replace(/\-\-\-\-/gi, '-');
+             slug = slug.replace(/\-\-\-/gi, '-');
+             slug = slug.replace(/\-\-/gi, '-');
+             //Xóa các ký tự gạch ngang ở đầu và cuối
+             slug = '@' + slug + '@';
+             slug = slug.replace(/\@\-|\-\@|\@/gi, '');
+             //In slug ra textbox có id “slug”
+         document.getElementById('convert_slug').value = slug;
+     }
+</script>
 <!-- calendar -->
 	<script type="text/javascript" src="{{('public/backend/js/monthly.js')}}"></script>
 	<script type="text/javascript">
@@ -448,6 +521,7 @@ $("#validatetForm").validate();
 		}
 		});
 	</script>
+
 	<!-- //calendar -->
 </body>
 </html>

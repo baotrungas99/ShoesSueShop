@@ -14,12 +14,33 @@ use Socialite;
 use App\Models\Social;
 use App\Models\SliderModel;
 use App\Models\Order;
+use App\Models\CategoryPost;
 session_start();
 class HomeController extends Controller
 {
+    public function contact_us(Request $request){
+        //slide
+        $slider = SliderModel::Orderby('slider_id', 'desc')->where('slider_status', '0')->take(4)->get();
+        $category_post= CategoryPost::orderby('category_post_id', 'desc')->where('cate_post_status', '0')->take(5)->get();
+        //seo
+        $meta_desc ="Sue Shoes";
+        $meta_title="Sue | E-Shoes";
+        $meta_keywords="Sue Bo";
+        $url_canonical = $request->url();
+        //end seo
+
+        $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
+        $brand_product = DB::table('tbl_brand_product')->where('brand_status','0')->orderby('brand_id','desc')->get();
+
+        return view('pages.contact_us.contact_us')->with('category',$cate_product)->with('brand',$brand_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post);
+    }
+    public function errors(){
+        return view('errors.404');
+    }
     public function index(Request $request){
         //slide
         $slider = SliderModel::Orderby('slider_id', 'desc')->where('slider_status', '0')->take(4)->get();
+        $category_post= CategoryPost::orderby('category_post_id', 'desc')->where('cate_post_status', '0')->take(5)->get();
         //seo
         $meta_desc ="Sue Shoes";
         $meta_title="Sue | E-Shoes";
@@ -35,9 +56,9 @@ class HomeController extends Controller
         // ->join('tbl_brand_product','tbl_brand_product.brand_id','=','tbl_product.brand_id')
         // ->orderby('tbl_product.product_id','desc')->get();
 
-        $all_product = DB::table('tbl_product')->where('product_status','0')->orderby('product_id','desc')->limit(8)->get();
+        $all_product = DB::table('tbl_product')->where('product_status','0')->orderby(db::raw('RAND()'))->paginate(8);
 
-        return view('pages.home')->with('category',$cate_product)->with('brand',$brand_product)->with('all_product',$all_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider);
+        return view('pages.home')->with('category',$cate_product)->with('brand',$brand_product)->with('all_product',$all_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post);
         // return view('pages.home')->with(compact('cate_product','brand_product')); diferent way
     }
     public function search(request $request){
@@ -58,13 +79,13 @@ class HomeController extends Controller
     }
 
     //send mail
-    public function send_mail(){
+    public function send_mail(request $request) {
         //send mail
-        $to_name = "Trung";
-        $to_email = "duymom2107@gmail.com";//send to this email
+        $to_name = $request->shipping_name;
+        $to_email = $request->shipping_email;//send to this email
+        $ftotal = $request->session_cart_id;
 
-
-        $data = array("name"=>"Mail từ tài khoản Khách hàng","body"=>'Mail gửi về vấn về hàng hóa'); //body of mail.blade.php
+        $data = array("name"=>"Mail từ Shop gửi đến tài khoản khách hàng","body"=>'Tổng hóa đơn:'.$ftotal); //body of mail.blade.php
 
         Mail::send('pages.send_mail',$data,function($message) use ($to_name,$to_email){
 
@@ -74,6 +95,7 @@ class HomeController extends Controller
         });
         // return redirect('/')->with('message','');
         //--send mail
+        return redirect()->back();
     }
     public function login_google_customer(){
         return Socialite::driver('google')->redirect();
@@ -126,8 +148,8 @@ class HomeController extends Controller
             //login in vao trang quan tri
             $account_name = LoginCustomer::where('customer_id',$account->user)->first();
             // Session::put('admin_name',$account_name->admin_name);
-            Session::put('admin_id',$account_name->admin_id);
-            return redirect('/checkout')->with('message', 'Đăng nhập Admin thành công');
+            Session::put('admin_id',$account_name->customer_id);
+            return redirect('/checkout')->with('message', 'Đăng nhập customer thành công');
         }else{
 
              $admin_login = new Social([
@@ -151,7 +173,7 @@ class HomeController extends Controller
             $account_name = Login::where('admin_name',$account->user)->first();
 
             Session::put('admin_login',$account_name->admin_name);
-            Session::put('admin_id',$account_name->admin_id);
+            Session::put('admin_id',$account_name->customer_id);
             return redirect('/checkout')->with('message', 'Đăng nhập Customer thành công');
         }
     }

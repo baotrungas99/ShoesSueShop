@@ -11,7 +11,15 @@
     <meta name="author" content="">
     <link rel="icon" type="image/x-icon" href="" />
     <meta name="author" content="">
+
+    {{--   <meta property="og:image" content="{{$image_og}}" />
+      <meta property="og:site_name" content="http://localhost/webbanhangLAVAREL/shopbanhang" />
+      <meta property="og:description" content="{{$meta_desc}}" />
+      <meta property="og:title" content="{{$meta_title}}" />
+      <meta property="og:url" content="{{$url_canonical}}" />
+      <meta property="og:type" content="website" /> --}}
     <!-- seo -->
+
     <title>{{$meta_title}}</title>
     <link href="{{asset('public/frontend/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('public/frontend/css/font-awesome.min.css')}}" rel="stylesheet">
@@ -42,8 +50,8 @@
 					<div class="col-sm-6">
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
-								<li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
-								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+								<li><a href="#"><i class="fa fa-phone"></i> +84 36 96 31 514</a></li>
+								<li><a href="#"><i class="fa fa-envelope"></i> Chrissueshop@chrissuesop.com</a></li>
 							</ul>
 						</div>
 					</div>
@@ -67,10 +75,11 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="{{asset('public/frontend/images/logo.png')}}" alt="" /></a>
+							<a href="{{URL::to('/homepage')}}"><img src="{{asset('public/frontend/images/chrisbologoresize.jpg')}}" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right">
 							<div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
 									USA
 									<span class="caret"></span>
 								</button>
@@ -156,16 +165,29 @@
 							<ul class="nav navbar-nav collapse navbar-collapse">
 								<li><a href="{{URL::to('/homepage')}}" class="active">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
-                                    <ul role="menu" class="sub-menu">
-                                        <li><a href="shop.html">Products</a></li>
 
+                                    <ul role="menu" class="sub-menu">
+                                    @foreach($category as $key => $cate)
+                                        @if($cate->category_status==0)
+                                        <li><a href="{{url('/category-product/'.$cate->slug_category_product)}}">
+                                        {{$cate->category_name}}</a></li>
+                                        @endif
+                                    @endforeach
                                     </ul>
                                 </li>
-								<li class="dropdown"><a href="#">News<i class="fa fa-angle-down"></i></a>
 
+								<li class="dropdown"><a href="#">News<i class="fa fa-angle-down"></i></a>
+                                <ul role="menu" class="sub-menu">
+                                    @foreach($category_post as $key => $cate_post)
+                                        @if($cate_post->cate_post_status==0)
+                                        <li><a href="{{url('/category-post/'.$cate_post->cate_post_slug)}}">
+                                        {{$cate_post->cate_post_name}}</a></li>
+                                        @endif
+                                    @endforeach
+                                    </ul>
                                 </li>
 								<li><a href="{{URL::to('/show-cart-ajax')}}">Cart</a></li>
-								<li><a href="contact-us.html">Contact</a></li>
+								<li><a href="{{url('/contact')}}">Contact</a></li>
 							</ul>
 						</div>
 					</div>
@@ -232,9 +254,27 @@
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
                             @foreach($category as $key => $cate)
 							    <div class="panel panel-default">
-								    <div class="panel-heading">
-									<h4 class="panel-title"><a href="{{URL::to('/category-product/'.$cate->slug_category_product)}}">{{$cate->category_name}}</a></h4>
-								    </div>
+                                    @if($cate->category_parent==0)
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a href="{{url('/category-product/'.$cate->slug_category_product)}}">
+                                                <span class="badge pull-right"><i data-toggle="collapse" data-parent="#accordian" href="#{{$cate->slug_category_product}}" class="fa fa-plus"></i></span>
+                                                {{$cate->category_name}}
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="{{$cate->slug_category_product}}" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <ul>
+                                                @foreach($category as $key => $cate_sub)
+                                                    @if($cate_sub->category_id==$cate->category_parent)
+                                                    <li><a href="{{url('/category-product/'.$cate_sub->slug_category_product)}}">{{$cate_sub->category_name}} </a></li>
+                                                    @endif
+                                                @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    @endif
 							    </div>
                             @endforeach
 						</div><!--/category-products-->
@@ -283,7 +323,7 @@
 				<div class="row">
 					<div class="col-sm-2">
 						<div class="companyinfo">
-							<h2><span>e</span>-shopper</h2>
+							<h2><span>ChrisBo</span>-shopper</h2>
 							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
 						</div>
 					</div>
@@ -292,14 +332,14 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="{{asset('public/frontend/images/iframe1.png')}}" alt="" />
+										<img src="{{asset('public/frontend/images/chrisbologo.jpg')}}" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
 									</div>
 								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
+								<p>Comming soon...</p>
+								<h2>9 SEP 2021</h2>
 							</div>
 						</div>
 
@@ -307,14 +347,14 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="{{asset('public/frontend/images/iframe2.png')}}" alt="" />
+										<img src="{{asset('public/frontend/images/chrisbologo.jpg')}}" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
 									</div>
 								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
+								<p>Comming soon...</p>
+								<h2>9 SEP 2021</h2>
 							</div>
 						</div>
 
@@ -322,14 +362,14 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="{{asset('public/frontend/images/iframe3.png')}}" alt="" />
+										<img src="{{asset('public/frontend/images/chrisbologo.jpg')}}" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
 									</div>
 								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
+								<p>Comming soon...</p>
+								<h2>9 SEP 2021</h2>
 							</div>
 						</div>
 
@@ -337,14 +377,14 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="{{asset('public/frontend/images/iframe4.png')}}" alt="" />
+										<img src="{{asset('public/frontend/images/chrisbologo.jpg')}}" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
 									</div>
 								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
+								<p>Comming soon...</p>
+								<h2>9 SEP 2021</h2>
 							</div>
 						</div>
 					</div>
@@ -427,8 +467,8 @@
 		<div class="footer-bottom">
 			<div class="container">
 				<div class="row">
-					<p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
-					<p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+					<p class="pull-left">Copyright © 2021 E-SHOPPER Inc. All rights reserved.</p>
+					<p class="pull-right">Designed by <span><a target="_blank" href="#">Nguyen Bao Trung</a></span></p>
 				</div>
 			</div>
 		</div>
@@ -575,9 +615,20 @@
                                     });
                                 }
                         });
+                        $.ajax({
+                            url:'{{url('/send-mail')}}',
+                            data:{shipping_email:shipping_email,shipping_name:shipping_name,shipping_phone:shipping_phone,shipping_address:shipping_address,shipping_notes:shipping_notes,_token:_token,order_feeship:order_feeship,order_coupon:order_coupon,shipping_method:shipping_method,session_cart_id=session_cart_id},
+                            method:'get',
+                            success:function(){
+                                swal("Poof! Your order details is sent to your email. please check your email!", {
+                                    icon: "success",
+                                    text: "Your order comming soon!",
+                                    });
+                            }
+                        });
                         window.setTimeout(function(){
                             location.reload();
-                        },3000);// reset timeout ajax request
+                        },7000);// reset timeout ajax request
                 } else {
                     swal("Pleas complete your order to continue...!");
                 }
