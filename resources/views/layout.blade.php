@@ -617,7 +617,7 @@
                         });
                         $.ajax({
                             url:'{{url('/send-mail')}}',
-                            method:'get',
+                            method:'GET',
                             data:{shipping_email:shipping_email,shipping_name:shipping_name,session_cart_id=session_cart_id},
                             success:function(){
                                 swal("Poof! Your order details is sent to your email. please check your email!", {
@@ -626,9 +626,9 @@
                                     });
                             }
                         });
-                        window.setTimeout(function(){
-                            location.reload();
-                        },7000);// reset timeout ajax request
+                        // window.setTimeout(function(){
+                        //     location.reload();
+                        // },7000);// reset timeout ajax request
                 } else {
                     swal("Pleas complete your order to continue...!");
                 }
