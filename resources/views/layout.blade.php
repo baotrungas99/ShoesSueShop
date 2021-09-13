@@ -29,6 +29,7 @@
 	<link href="{{asset('public/frontend/css/main.css')}}" rel="stylesheet">
 	<link href="{{asset('public/frontend/css/responsive.css')}}" rel="stylesheet">
     <link href="{{asset('public/frontend/css/sweetalert.css')}}" rel="stylesheet">
+    <link href="{{asset('public/frontend/css/style.css')}}" rel="stylesheet">
 
 
     <!--[if lt IE 9]>
@@ -615,20 +616,20 @@
                                     });
                                 }
                         });
-                        $.ajax({
-                            url:'{{url('/send-mail')}}',
-                            method:'GET',
-                            data:{shipping_email:shipping_email,shipping_name:shipping_name,session_cart_id=session_cart_id},
-                            success:function(){
-                                swal("Poof! Your order details is sent to your email. please check your email!", {
-                                    icon: "success",
-                                    text: "Your order comming soon!",
-                                    });
-                            }
-                        });
-                        // window.setTimeout(function(){
-                        //     location.reload();
-                        // },7000);// reset timeout ajax request
+                        // $.ajax({
+                        //  url:'{{url('/send-mail')}}',
+                        //     method:'GET',
+                        //     data:{shipping_email:shipping_email,shipping_name:shipping_name,shipping_phone:shipping_phone,shipping_address:shipping_address,shipping_notes:shipping_notes,_token:_token,order_feeship:order_feeship,order_coupon:order_coupon,shipping_method:shipping_method,session_cart_id=session_cart_id},
+                        //     success:function(){
+                        //         swal("Poof! Your order details is sent to your email. please check your email!", {
+                        //             icon: "success",
+                        //             text: "Your ord   er comming soon!",
+                        //             });
+                        //     }
+                        // });
+                        window.setTimeout(function(){
+                            location.reload();
+                        },5000);// reset timeout ajax request
                 } else {
                     swal("Pleas complete your order to continue...!");
                 }
