@@ -4,7 +4,7 @@
             <div class="col-lg-12">
                     <section class="panel">
                         <header class="panel-heading">
-                           Thêm user
+                           Add users
                         </header>
                          <?php
                             $message = Session::get('message');
@@ -35,7 +35,7 @@
                                     <input type="text" name="admin_password" class="form-control" id="exampleInputEmail1" placeholder="Slug">
                                 </div>
 
-                                <button type="submit" name="add_category_product" class="btn btn-info">Thêm users</button>
+                                <button type="submit" name="add_category_product" class="btn btn-info">Add users</button>
                                 </form>
                             </div>
 
