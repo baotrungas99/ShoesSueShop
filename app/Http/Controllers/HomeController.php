@@ -63,6 +63,7 @@ class HomeController extends Controller
     }
     public function search(request $request){
         $slider = SliderModel::Orderby('slider_id', 'desc')->where('slider_status', '0')->take(4)->get();
+        $category_post= CategoryPost::orderby('category_post_id', 'desc')->where('cate_post_status', '0')->take(5)->get();
         //seo
         $meta_desc = "search";
         $meta_keywords = "search";
@@ -75,7 +76,7 @@ class HomeController extends Controller
 
         $search_product = DB::table('tbl_product')->where('product_name','like','%'.$keyword.'%')->get();
 
-        return view('pages.product.search')->with('category',$cate_product)->with('brand',$brand_product)->with('search_product',$search_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider);
+        return view('pages.product.search')->with('category',$cate_product)->with('brand',$brand_product)->with('search_product',$search_product)->with('meta_desc',$meta_desc)->with('meta_title',$meta_title)->with('meta_keywords',$meta_keywords)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('category_post',$category_post);
     }
 
     //send mail

@@ -18,8 +18,8 @@ Route::get('/404','HomeController@errors');
 Route::get('/homepage','HomeController@index');
 Route::post('/search','HomeController@search');
 Route::get('/contact','HomeController@contact_us');
-//category show in home view
 
+//category show in home view
 Route::get('/category-product/{slug_category_product}','CategoryProduct@show_category_home');
 Route::get('/brand-product/{brand_slug}','BrandProduct@show_brand_home');
 Route::get('/detail-product/{product_slug}','ProductController@details_product');
@@ -32,6 +32,7 @@ Route::get('/dashboard','AdminController@show_dashboard');
 
 route::post('/admin-dashboard','AdminController@dashboard');
 Route::get('/logout', 'AdminController@logout');
+
 // category Post
 Route::get('/add-category-post', 'CategoryPostController@add_category_post');
 Route::get('/all-category-post', 'CategoryPostController@all_category_post');
@@ -57,7 +58,6 @@ Route::post('/update-post/{post_id}','PostController@update_post');
 Route::get('/delete-post/{post_id}','PostController@delete_post');
 
 // show Post News
-
 Route::get('/category-post/{cate_post_slug}','PostController@show_list_post');
 Route::get('/detail-post/{cate_post_slug}','PostController@show_detail_post');
 
