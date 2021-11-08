@@ -4,7 +4,7 @@
             <div class="col-lg-12">
                     <section class="panel">
                         <header class="panel-heading">
-                            update post Product
+                            Update post Product
                         </header>
 
                          <?php
