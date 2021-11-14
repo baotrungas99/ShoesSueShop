@@ -54,7 +54,7 @@ $("#validatetForm").validate();
 <header class="header fixed-top clearfix">
 <!--logo start-->
 <div class="brand">
-    <a href="index.html" class="logo">
+    <a href="{{URL::to('/dashboard')}}" class="logo">
         ADMIN
     </a>
     <div class="sidebar-toggle-box">
@@ -246,7 +246,7 @@ $("#validatetForm").validate();
  <!-- footer -->
 		  <div class="footer">
 			<div class="wthree-copyright">
-			  <p>© 2021 Visitors. All rights reserved | Design by <a href="">Trung Dep Trai</a></p>
+			  <p>© 2021 Visitors. All rights reserved | Design by <a href="https://www.facebook.com/baotrungas99/">Nguyen Bao Trung</a></p>
 			</div>
 		  </div>
   <!-- / footer -->

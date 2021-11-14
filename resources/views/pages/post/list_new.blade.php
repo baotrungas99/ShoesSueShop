@@ -23,7 +23,7 @@
 							</div>
                             <div class="col-md-4">
                                 <a href="">
-                                    <img style="width:auto;" src="{{url('public/upload/post/'.$post->post_image)}}" alt="">
+                                    <img style="width:auto; height:150px" src="{{url('public/upload/post/'.$post->post_image)}}" alt="">
                                 </a>
                             </div >
                             <div class="col-md-8">
