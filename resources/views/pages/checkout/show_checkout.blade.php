@@ -9,7 +9,7 @@
 				</ol>
 			</div><!--/breadcrums-->
 			<div class="register-req clearfix col-sm-10" >
-				<p>Please use Register And Checkout to easily get access to your order history, or use Checkout as Guest</p>
+				<p>Please use Register or Login for checkout your cart</p>
 			</div><!--/register-req-->
 			<div class="shopper-informations">
 				<div class="row">

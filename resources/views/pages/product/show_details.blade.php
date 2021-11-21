@@ -116,7 +116,7 @@
 										<div class="product-image-wrapper">
 											<div class="single-products">
 												<div class="productinfo text-center">
-													
+
 													<form>
                                 @csrf
                                 <input type="hidden" class="cart_product_id_{{$related->product_id}}" value="{{$related->product_id}}" >
