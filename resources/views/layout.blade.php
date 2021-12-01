@@ -629,7 +629,7 @@
                         // });
                         window.setTimeout(function(){
                             location.reload();
-                        },5000);// reset timeout ajax request
+                        },3000);// reset timeout ajax request
                 } else {
                     swal("Pleas complete your order to continue...!");
                 }
