@@ -86,11 +86,11 @@ class HomeController extends Controller
         $to_email = $request->shipping_email;//send to this email
         $ftotal = $request->session_cart_id;
 
-        $data = array("name"=>"Mail từ Shop gửi đến tài khoản khách hàng","body"=>'Tổng hóa đơn:'.$ftotal); //body of mail.blade.php
+        $data = array("name"=>"Mail From Chrissueshop to customer","body"=>'Total bill:'.$ftotal); //body of mail.blade.php
 
         Mail::send('pages.send_mail',$data,function($message) use ($to_name,$to_email){
 
-            $message->to($to_email)->subject('Test thử gửi mail google');//send this mail with subject
+            $message->to($to_email)->subject('Test automatically send google mail');//send this mail with subject
             $message->from($to_email,$to_name);//send from this mail
 
         });

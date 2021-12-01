@@ -19,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         $admin = Admin::with('roles')->orderBy('admin_id','DESC')->paginate(5);
-        return view('admin.users.all_users')->with(compact('admin'));
+        return view('admin.users.all_users', compact('admin'));
     }
     public function add_users(){
         return view('admin.users.add_users');

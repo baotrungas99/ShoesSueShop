@@ -8,9 +8,9 @@
 				  <li class="active">check out</li>
 				</ol>
 			</div><!--/breadcrums-->
-			<div class="register-req clearfix col-sm-10" >
-				<p>Please use Register or Login for checkout your cart</p>
-			</div><!--/register-req-->
+            
+			<!--/register-req-->
+
 			<div class="shopper-informations">
 				<div class="row">
                 <div class="col-sm-12 clearfix">
