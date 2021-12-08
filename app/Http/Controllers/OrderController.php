@@ -99,8 +99,13 @@ class OrderController extends Controller
         if($product_coupon!='no'){
             $coupon = Coupon::where('coupon_code',$product_coupon)->first();
             // echo $coupon->coupon_number;
-            $coupon_condition = $coupon->coupon_condition;//get the coupon condition
-            $coupon_number = $coupon->coupon_number;// get the coupon number for calculating the price
+            if($coupon){
+                $coupon_condition = $coupon->coupon_condition;//get the coupon condition
+                $coupon_number = $coupon->coupon_number;// get the coupon number for calculating the price
+            }else{
+                $coupon_condition=0;
+                $coupon_number=0;
+            }
         }else{
             $coupon_condition=2;
             $coupon_number=0;
@@ -208,7 +213,7 @@ class OrderController extends Controller
                             <th>Products name</th>
                             <th>Quantity</th>
                             <th>Price</th>
-                            <th>Shipping Fee</th>
+
                             <th>Coupon</th>
                             <th>Total</th>
                         </tr>
@@ -230,7 +235,7 @@ class OrderController extends Controller
                                 <td>'.$pro->product_name.'</td>
                                 <td>'.$pro->product_sales_quantity.'</td>
                                 <td> $ '.number_format($pro->product_price).'</td>
-                                <td> $ '.number_format($pro->product_feeship).'</td>
+
                                 <td>'.$pro->product_coupon.'</td>
                                 <td> $ '.number_format($subtotal).'</td>
                             </tr>';

@@ -121,6 +121,10 @@ class ProductController extends Controller
         $data['product_description'] = $request->product_description;
         $data['product_price'] = $request->product_price;
         $data['product_quantity'] = $request->product_quantity;
+        if($request->product_quantity ==0){
+            session::put('message','please do not put 0');
+            $data['product_quantity']='1';
+        }
         $data['product_content'] = $request->product_content;
         $data['category_id'] = $request->product_cate;
         $data['brand_id'] = $request->product_brand;

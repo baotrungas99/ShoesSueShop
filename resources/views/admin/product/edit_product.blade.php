@@ -12,6 +12,7 @@
                              echo '<span class="text-alert">',$message,'</span>';
                              Session::put('message',null);
                             }
+
                     ?>
                         <div class="panel-body">
 
@@ -28,10 +29,12 @@
                                     <label for="exampleInputEmail1">Slug</label>
                                     <input type="text" name="product_slug" class="form-control" id="exampleInputEmail1" value="{{$pro->product_slug}}">
                                 </div>
+
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Product quantity</label>
                                     <input type="text" name = "product_quantity" class="form-control" id="exampleInputEmail1" value="{{$pro->product_quantity}}">
                                 </div>
+
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Product price</label>
                                     <input type="text" name = "product_price" class="form-control" id="exampleInputEmail1" value="{{$pro->product_price}}">
