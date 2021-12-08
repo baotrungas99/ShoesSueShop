@@ -79,7 +79,7 @@ class AdminController extends Controller
             $account_name = Login::where('admin_id',$account->user)->first();
             Session::put('admin_name',$account_name->admin_name);
             Session::put('admin_id',$account_name->admin_id);
-            return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');
+            return redirect('/dashboard')->with('message', 'login successfully');
         }else{
 
              $admin_login = new Social([
@@ -104,7 +104,7 @@ class AdminController extends Controller
 
             Session::put('admin_login',$account_name->admin_name);
             Session::put('admin_id',$account_name->admin_id);
-            return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');
+            return redirect('/dashboard')->with('message', 'login successfully');
         }
     }
     public function login_google(){
@@ -117,7 +117,7 @@ class AdminController extends Controller
         $account_name = Login::where('admin_id',$authUser->user)->first();
         Session::put('admin_name',$account_name->admin_name);
         Session::put('admin_id',$account_name->admin_id);
-        return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');
+        return redirect('/dashboard')->with('message', 'login successfully');
     }
     public function findOrCreateUser($users,$provider){
         $authUser = Social::where('provider_user_id', $users->id)->first();
@@ -146,6 +146,6 @@ class AdminController extends Controller
         $account_name = Login::where('admin_id',$login_gg->user)->first();
         Session::put('admin_name',$account_name->admin_name);
         Session::put('admin_id',$account_name->admin_id);
-        return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');
+        return redirect('/dashboard')->with('message', 'login successfully');
     }
 }

@@ -15,11 +15,11 @@
                         ?>
                         <div class="panel-body">
                             <div class="position-center">
-                                <form role="form"action="{{url('/insert-slider')}}"method="post" enctype="multipart/form-data"> 
+                                <form role="form"action="{{url('/insert-slider')}}"method="post" enctype="multipart/form-data">
                                     @csrf
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">slide Name</label>
-                                    <input type="text" name = "slider_name" class="form-control" placeholder="Name">
+                                    <input type="text" name = "slider_name" class="form-control" placeholder="Name"required>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">image</label>
@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Description</label>
-                                    <textarea style="resize:none" rows="8" type="password" name = "slider_desc" class="ckeditor form-control" id="1" placeholder="slide details">
+                                    <textarea style="resize:none" rows="8" type="password" name = "slider_desc" class="ckeditor form-control" id="1" placeholder="slide details"required>
                                     </textarea>
                                 </div>
                                 <div class="form-group">

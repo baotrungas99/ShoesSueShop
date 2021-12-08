@@ -20,7 +20,7 @@
                                     {{csrf_field() }}
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Post Title</label>
-                                    <input type="text" name = "post_title" class="form-control" onkeyup="ChangeToSlug();" id="slug" placeholder="Name">
+                                    <input type="text" name = "post_title" class="form-control" onkeyup="ChangeToSlug();" id="slug" placeholder="Name"required>
                                 </div>
 
                                 <div class="form-group">
@@ -30,23 +30,23 @@
 
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Post Summary</label>
-                                    <textarea style="resize:none" rows="8" type="password" name = "post_desc" class="ckeditor form-control" id="1" placeholder="post details">
+                                    <textarea style="resize:none" rows="8" type="password" name = "post_desc" class="ckeditor form-control" id="1" placeholder="post details"required>
                                     </textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Description and Content</label>
-                                    <textarea style="resize:none" rows="8" type="password" name = "post_content" class="ckeditor form-control" id="1" placeholder="post details">
+                                    <textarea style="resize:none" rows="8" type="password" name = "post_content" class="ckeditor form-control" id="1" placeholder="post details"required>
                                     </textarea>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Keywords</label>
-                                    <input type="text" name="post_meta_keyword" class="form-control" id="keywords">
+                                    <input type="text" name="post_meta_keyword" class="form-control" id="keywords"required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Meta Description</label>
-                                    <input type="text" name="post_meta_desc" class="form-control" id="keywords">
+                                    <input type="text" name="post_meta_desc" class="form-control" id="keywords" required>
                                 </div>
 
                                 <div class="form-group">

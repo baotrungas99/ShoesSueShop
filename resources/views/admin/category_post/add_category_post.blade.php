@@ -32,8 +32,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Keywords</label>
-                                    <textarea style="resize:none" rows="8" type="password" name = "category_post_keywords" class=" form-control" id="2" placeholder="Category details" required>
-                                    </textarea>
+                                    <input style="resize:none" rows="8" type="text" name = "category_post_keywords" class=" form-control" id="2" placeholder="Category details" required>
+                                    </input>
                                 </div>
 
                                 <div class="form-group">

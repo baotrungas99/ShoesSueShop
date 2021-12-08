@@ -9,9 +9,9 @@
 							<h3>{{$post->post_title}}</h3>
 							<div class="post-meta">
 								<ul>
-									<li><i class="fa fa-user"></i> Mac Doe</li>
+									<li><i class="fa fa-user"></i> Trung</li>
 									<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-									<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
+									<li><i class="fa fa-calendar"></i> DEC 5, 201</li>
 								</ul>
 								<span>
 										<i class="fa fa-star"></i>
@@ -23,21 +23,14 @@
 							</div>
                             <div class="col-md-4">
                                 <a href="">
-                                    <img style="width:auto; height:150px" src="{{url('public/upload/post/'.$post->post_image)}}" alt="">
+                                    <img style="width:150px; height:150px" src="{{url('public/upload/post/'.$post->post_image)}}" alt="">
                                 </a>
                             </div >
                             <div class="col-md-8">
                                 <p>{!!$post->post_desc!!}</p>
-                                <a  class="btn btn-primary" href="{{url('/detail-post/'.$post->cate_post_slug)}}">Read More</a>
-                            </div> <br/>
-                            <div class="col-md-12">
-                                <ul class="pagination">
-                                    <li><a href="" class="active">1</a></li>
-                                    <li><a href="">2</a></li>
-                                    <li><a href="">3</a></li>
-                                    <li><a href=""><i class="fa fa-angle-double-right"></i></a></li>
-                                </ul>
-                            </div>
+                                <a  class="btn btn-primary" href="{{url('/detail-post/'.$post->cate_post_slug)}}">Read More</a><br/> <br/>
+                            </div> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+
                             @endforeach
 					</div>
 

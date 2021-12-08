@@ -12,9 +12,9 @@
 
 							<div class="post-meta">
 								<ul>
-									<li><i class="fa fa-user"></i> Mac Doe</li>
+									<li><i class="fa fa-user"></i> Trung</li>
 									<li><i class="fa fa-clock-o"></i> 1:33 pm</li>
-									<li><i class="fa fa-calendar"></i> DEC 5, 2013</li>
+									<li><i class="fa fa-calendar"></i> DEC 5, 2021</li>
 								</ul>
 								<span>
 									<i class="fa fa-star"></i>
@@ -61,5 +61,5 @@
 <div class="fb-share-button" data-href="http://localhost/webbanhangLAVAREL/shopbanhang/homepage" data-layout="button_count" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{$url_canonical}}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
             <div class="fb-like" data-href="{{$url_canonical}}" data-width="" data-layout="button_count" data-action="like" data-size="large" data-share="false"></div>
 
-					
+
 @endsection

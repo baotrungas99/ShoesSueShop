@@ -20,7 +20,7 @@
                                     {{csrf_field() }}
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">brand Product Name</label>
-                                    <input type="text" name = "brand_product_name" class="form-control" onkeyup="ChangeToSlug();" id="slug" placeholder="Name">
+                                    <input type="text" name = "brand_product_name" class="form-control" onkeyup="ChangeToSlug();" id="slug" placeholder="Name" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Slug</label>
@@ -28,12 +28,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Description</label>
-                                    <textarea style="resize:none" rows="8" type="password" name = "brand_product_description" class="ckeditor form-control" id="1" placeholder="brand details">
+                                    <textarea style="resize:none" rows="8" type="password" name = "brand_product_description" class="ckeditor form-control" id="1" placeholder="brand details"required>
                                     </textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Keywords</label>
-                                    <input type="text" name="brand_keyword" class="form-control" id="keywords">
+                                    <input type="text" name="brand_keyword" class="form-control" id="keywords" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Show</label>
